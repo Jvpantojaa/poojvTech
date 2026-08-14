@@ -6,3 +6,5 @@ public class Dvd(string titulo, string autor) : ItemAcervo(titulo, autor)
 
     public override decimal MultaDiaAtrasado => 3m;
 }
+
+public enum 
