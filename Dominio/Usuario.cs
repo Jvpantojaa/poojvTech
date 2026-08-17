@@ -1,18 +1,45 @@
-class Carteirinha
+namespace Biblioteca.Dominio;
+
+public class Carteirinha
 {
-    private string nome;
-    private DateTime dataNascimento;
-    
-    public string Nome
+    public string Nome { get; }
+    public DateTime DataNascimento { get; }
+    private List<Emprestimo> _emprestimos = new();
+    public IReadOnlyList<Emprestimo> Emprestimos => _emprestimos;
+
+    public Carteirinha(string nome, DateTime dataNascimento)
     {
-        get { return nome; }
-        set { nome = value.ToUpper(); }
+        if (string.IsNullOrWhiteSpace(nome))
+        {
+            throw new InvalidOperationException("O nome não pode ser vazio.");
+        }
+
+        if (dataNascimento > DateTime.Now)
+        {
+            throw new InvalidOperationException("Data de nascimento não pode ser futura.");
+        }
+
+        Nome = nome;
+        DataNascimento = dataNascimento;
     }
-    
-    public DateTime DataNascimento
+
+    public int CalcularIdade()
     {
-        get { return dataNascimento; }
-        set { dataNascimento = value; }
+        var hoje = DateTime.Today;
+        var idade = hoje.Year - DataNascimento.Year;
+        if (DataNascimento.Date > hoje.AddYears(-idade)) idade--;
+        return idade;
+    }
+
+    public int QuantidadeEmprestada => _emprestimos.Count(e => e.Ativo);
+
+    public bool PodePegarMais()
+    {
+        return QuantidadeEmprestada < 3;
+    }
+
+    public void AdicionarEmprestimo(Emprestimo emprestimo)
+    {
+        _emprestimos.Add(emprestimo);
     }
 }
-
