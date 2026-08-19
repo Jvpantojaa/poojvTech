@@ -31,11 +31,13 @@ public class Carteirinha
         return idade;
     }
 
-    public int QuantidadeEmprestada => _emprestimos.Count(e => e.Ativo);
+    public int QuantidadeEmprestada     
+        => _emprestimos.Count(e => e.Ativo);
 
     public bool PodePegarMais()
     {
         return QuantidadeEmprestada < 3;
+        
     }
 
     public void AdicionarEmprestimo(Emprestimo emprestimo)

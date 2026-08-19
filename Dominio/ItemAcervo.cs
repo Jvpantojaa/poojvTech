@@ -6,11 +6,11 @@ public abstract class ItemAcervo
     {
         if(string.IsNullOrWhiteSpace(titulo))
         {
-            throw new InvalidOperationException("O título não pode ser vazio.");
+            throw new ExcecaoDominio("O título não pode ser vazio.");
         }
         if(string.IsNullOrWhiteSpace(autor))
         {
-            throw new InvalidOperationException("O autor não pode ser vazio.");
+            throw new ExcecaoDominio("O autor não pode ser vazio.");
         }
         Titulo = titulo;
         Autor = autor;

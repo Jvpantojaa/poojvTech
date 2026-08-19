@@ -4,137 +4,78 @@ class Program
 {
     static void Main()
     {
-        Console.WriteLine("📚 BIBLIOTECA DA DONA ZENAIDE\n");
-        Console.WriteLine("═".PadRight(60, '═'));
+        Carteirinha marina = new Carteirinha("Marina", new DateTime(2011, 5, 10));
+        Dvd dvd16 = new Dvd("Deadpool", "Fox", FaixaEtaria.Dezesseis);
 
-        Console.WriteLine("\n🎬 CENA 1: MARINA E O DVD DE 16 ANOS");
-        Console.WriteLine("─".PadRight(60, '─'));
-
-        var carteirinhaMarina = new Carteirinha("Marina", new DateTime(2011, 5, 10));
-        var dvd16 = new Dvd("Deadpool", "Fox", FaixaEtaria.Dezesseis);
-
-        int idadeMarina = carteirinhaMarina.CalcularIdade();
-        Console.WriteLine($"📌 {carteirinhaMarina.Nome} tem {idadeMarina} anos.");
-        Console.WriteLine($"📌 Quer levar o DVD '{dvd16.Titulo}' (Faixa Etária: {dvd16.FaixaEtaria})");
-
-        if (dvd16.PodeAlugar(idadeMarina))
+        if (dvd16.PodeAlugar(marina.CalcularIdade()))
         {
-            Console.WriteLine($"✅ {carteirinhaMarina.Nome} pode levar!");
+            Console.WriteLine("Marina pode levar o DVD");
         }
         else
         {
-            Console.WriteLine($"❌ {carteirinhaMarina.Nome} NÃO pode levar!");
-            Console.WriteLine($"📌 Motivo: Precisa ter {dvd16.IdadeMinima()} anos. Ela tem {idadeMarina}.");
+            Console.WriteLine("Marina não pode levar o DVD");
         }
 
-        Console.WriteLine("\n🎬 CENA 2: CAIO COM 3 ITENS QUER O 4º");
-        Console.WriteLine("─".PadRight(60, '─'));
+        Carteirinha caio = new Carteirinha("Caio", new DateTime(2000, 3, 20));
 
-        var carteirinhaCaio = new Carteirinha("Caio", new DateTime(2000, 3, 20));
+        Livro livro1 = new Livro("O Senhor dos Anéis", "Tolkien");
+        Livro livro2 = new Livro("Harry Potter", "Rowling");
+        Livro livro3 = new Livro("1984", "Orwell");
+        Livro livro4 = new Livro("Dom Casmurro", "Machado");
 
-        var livro1 = new Livro("O Senhor dos Anéis", "Tolkien");
-        var livro2 = new Livro("Harry Potter", "Rowling");
-        var livro3 = new Livro("1984", "Orwell");
-        var livro4 = new Livro("Dom Casmurro", "Machado");
-
-        Console.WriteLine($"📌 {carteirinhaCaio.Nome} pegou 3 livros:");
-
-        var emp1 = new Emprestimo(carteirinhaCaio, livro1);
-        var emp2 = new Emprestimo(carteirinhaCaio, livro2);
-        var emp3 = new Emprestimo(carteirinhaCaio, livro3);
-
-        Console.WriteLine($"   ✅ 1º: {livro1.Titulo}");
-        Console.WriteLine($"   ✅ 2º: {livro2.Titulo}");
-        Console.WriteLine($"   ✅ 3º: {livro3.Titulo}");
-        Console.WriteLine($"📌 {carteirinhaCaio.Nome} tem {carteirinhaCaio.QuantidadeEmprestada} itens.");
-
-        Console.WriteLine($"📌 Quer pegar o 4º: '{livro4.Titulo}'");
+        Emprestimo emp1 = new Emprestimo(caio, livro1);
+        Emprestimo emp2 = new Emprestimo(caio, livro2);
+        Emprestimo emp3 = new Emprestimo(caio, livro3);
 
         try
         {
-            var emp4 = new Emprestimo(carteirinhaCaio, livro4);
-            Console.WriteLine("✅ Conseguiu pegar!");
+            Emprestimo emp4 = new Emprestimo(caio, livro4);
+            Console.WriteLine("Caio conseguiu pegar o 4o item");
         }
-        catch (ExcecaoDominio ex)
+        catch (ExcecaoDominio)
         {
-            Console.WriteLine($"❌ {carteirinhaCaio.Nome} NÃO pode pegar!");
-            Console.WriteLine($"📌 Motivo: {ex.Message}");
+            Console.WriteLine("Caio não pode pegar o 4o item");
         }
 
-        Console.WriteLine("\n🎬 CENA 3: CAIO DEVOLVE 1 E PEGA OUTRO");
-        Console.WriteLine("─".PadRight(60, '─'));
-
-        Console.WriteLine($"📌 {carteirinhaCaio.Nome} devolveu '{livro1.Titulo}'");
         emp1.RegistrarDevolucao();
 
-        Console.WriteLine($"📌 Agora tem {carteirinhaCaio.QuantidadeEmprestada} itens.");
+        Emprestimo emp5 = new Emprestimo(caio, livro4);
+        Console.WriteLine("Caio pegou o 4o item depois de devolver um");
 
-        Console.WriteLine($"📌 Quer pegar '{livro4.Titulo}'");
+        Carteirinha joao = new Carteirinha("Joao", new DateTime(1995, 8, 12));
+        Livro livroPopular = new Livro("O Alquimista", "Paulo Coelho");
 
-        var emp4Caio = new Emprestimo(carteirinhaCaio, livro4);
-        Console.WriteLine($"✅ {carteirinhaCaio.Nome} levou '{livro4.Titulo}'!");
-        Console.WriteLine($"📌 Agora tem {carteirinhaCaio.QuantidadeEmprestada} itens.");
+        Emprestimo empJoao = new Emprestimo(joao, livroPopular);
 
-        Console.WriteLine("\n🎬 CENA 4: ITEM JÁ EMPRESTADO");
-        Console.WriteLine("─".PadRight(60, '─'));
-
-        var carteirinhaJoao = new Carteirinha("João", new DateTime(1995, 8, 12));
-        var livroPopular = new Livro("O Alquimista", "Paulo Coelho");
-
-        Console.WriteLine($"📌 {carteirinhaJoao.Nome} pegou '{livroPopular.Titulo}'");
-        var empJoao = new Emprestimo(carteirinhaJoao, livroPopular);
-
-        Console.WriteLine($"📌 {livroPopular.Titulo} está disponível? {livroPopular.Disponibilidade}");
-
-        var carteirinhaMaria = new Carteirinha("Maria", new DateTime(1998, 2, 28));
-        Console.WriteLine($"📌 {carteirinhaMaria.Nome} tentou pegar '{livroPopular.Titulo}'");
+        Carteirinha maria = new Carteirinha("Maria", new DateTime(1998, 2, 28));
 
         try
         {
-            var empMaria = new Emprestimo(carteirinhaMaria, livroPopular);
-            Console.WriteLine("✅ Conseguiu pegar!");
+            Emprestimo empMaria = new Emprestimo(maria, livroPopular);
+            Console.WriteLine("Maria conseguiu pegar o livro");
         }
-        catch (ExcecaoDominio ex)
+        catch (ExcecaoDominio)
         {
-            Console.WriteLine($"❌ {carteirinhaMaria.Nome} NÃO pode pegar!");
-            Console.WriteLine($"📌 Motivo: {ex.Message}");
+            Console.WriteLine("Maria não pode pegar o livro porque já está emprestado");
         }
 
-        Console.WriteLine($"📌 {livroPopular.Titulo} continua com {carteirinhaJoao.Nome}.");
+        Carteirinha elias = new Carteirinha("Elias", new DateTime(1970, 3, 15));
+        Revista revista = new Revista("Veja", "Editora Abril");
 
-        Console.WriteLine("\n🎬 CENA 5: SR. ELIAS - MULTA PAGA NÃO ACUMULA");
-        Console.WriteLine("─".PadRight(60, '─'));
-
-        var carteirinhaElias = new Carteirinha("Elias", new DateTime(1970, 3, 15));
-        var revista = new Revista("Veja", "Editora Abril");
-
-        Console.WriteLine($"📌 {carteirinhaElias.Nome} pegou a revista '{revista.Titulo}'");
-
-        var empElias = new Emprestimo(carteirinhaElias, revista);
-
-        Console.WriteLine($"📌 Devolveu com 5 dias de atraso.");
+        Emprestimo empElias = new Emprestimo(elias, revista);
         empElias.RegistrarDevolucao();
 
-        Console.WriteLine($"📌 Dias atrasados: {empElias.QtDiasAtrasados}");
-        decimal multa = empElias.MultaAtual;
-        Console.WriteLine($"📌 Multa a pagar: R$ {multa:F2}");
-
-        Console.WriteLine($"📌 {carteirinhaElias.Nome} pagou a multa.");
-        empElias.RegistrarPagamentoMulta();
-
-        Console.WriteLine($"📌 Multa paga: {empElias.MultaPaga}");
-        Console.WriteLine($"📌 Multa atual: R$ {empElias.MultaAtual:F2}");
-
-        Console.WriteLine($"\n📌 Duas semanas depois...");
-        Console.WriteLine($"📌 Alguém pergunta: Quanto o Sr. Elias devia?");
-
-        if (empElias.MultaPaga)
+        if (empElias.QtDiasAtrasados > 0)
         {
-            Console.WriteLine($"📌 Resposta: R$ {multa:F2} (já foi paga)");
-            Console.WriteLine($"📌 Valor não aumentou. Está registrado como pago.");
+            decimal multa = empElias.MultaAtual;
+            empElias.RegistrarPagamentoMulta();
+            Console.WriteLine($"Multa paga: {multa}");
+        }
+        else
+        {
+            Console.WriteLine("Sem multa a pagar");
         }
 
-        Console.WriteLine("\n" + "═".PadRight(60, '═'));
-        Console.WriteLine("\n✅ Todas as cenas foram executadas com sucesso!");
+        Console.WriteLine($"Multa atual depois de duas semanas: {empElias.MultaAtual}");
     }
 }
